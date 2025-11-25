@@ -1,6 +1,10 @@
+// frontend/src/App.jsx
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { useAuth } from './context/AuthContext';
+
 import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
+
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
@@ -8,16 +12,25 @@ import Learn from './pages/Learn';
 import Revise from './pages/Revise';
 import CalendarPage from './pages/CalendarPage';
 import HowItWorks from './pages/HowItWorks';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { useAuth } from './context/AuthContext';
+
+// This runs when no route matches (path="*")
+const FallbackRoute = () => {
+  const { user } = useAuth();
+  // If user is logged in → dashboard; otherwise → login
+  return <Navigate to={user ? '/dashboard' : '/login'} replace />;
+};
 
 const App = () => {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/dashboard" replace />} />
+      {/* Public routes */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
 
+      {/* Default landing */}
+      <Route path="/" element={<Navigate to="/dashboard" replace />} />
+
+      {/* Protected routes */}
       <Route
         path="/dashboard"
         element={
@@ -28,11 +41,14 @@ const App = () => {
           </ProtectedRoute>
         }
       />
+
       <Route
         path="/how-it-works"
         element={
           <ProtectedRoute>
-            <HowItWorks />
+            <Layout>
+              <HowItWorks />
+            </Layout>
           </ProtectedRoute>
         }
       />
@@ -47,6 +63,7 @@ const App = () => {
           </ProtectedRoute>
         }
       />
+
       <Route
         path="/revise"
         element={
@@ -57,10 +74,10 @@ const App = () => {
           </ProtectedRoute>
         }
       />
+
       <Route
         path="/calendar"
-        element=
-        {
+        element={
           <ProtectedRoute>
             <Layout>
               <CalendarPage />
@@ -68,6 +85,9 @@ const App = () => {
           </ProtectedRoute>
         }
       />
+
+      {/* Catch-all: any unknown URL → send user home */}
+      <Route path="*" element={<FallbackRoute />} />
     </Routes>
   );
 };
