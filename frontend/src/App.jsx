@@ -7,6 +7,7 @@ import Dashboard from './pages/Dashboard';
 import Learn from './pages/Learn';
 import Revise from './pages/Revise';
 import CalendarPage from './pages/CalendarPage';
+import HowItWorks from './pages/HowItWorks';
 
 const App = () => {
   return (
@@ -25,6 +26,15 @@ const App = () => {
           </ProtectedRoute>
         }
       />
+      <Route
+        path="/how-it-works"
+        element={
+          <ProtectedRoute>
+            <HowItWorks />
+          </ProtectedRoute>
+        }
+      />
+
       <Route
         path="/learn"
         element={

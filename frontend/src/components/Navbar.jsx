@@ -76,6 +76,14 @@ const Navbar = () => {
                             >
                                 Calendar
                             </Link>
+                            <Link
+                                to="/how-it-works"
+                                className="block px-4 py-2 hover:bg-[#1c2548] transition"
+                                onClick={() => setOpen(false)}
+                            >
+                                How MindLoop works
+                            </Link>
+
                             <button
                                 onClick={() => {
                                     logout();
